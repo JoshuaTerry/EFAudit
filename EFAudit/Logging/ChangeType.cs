@@ -2,17 +2,7 @@
 using System;
 
 namespace EFAudit.Logging
-{        
-    public static class ChangeTypeExtensions
-    {
-        public static IChangeType GetChangeType(this object obj)
-        {
-            if (obj == null)
-                return new UnknownChangeType();
-            else
-                return new ConcreteChangeType(obj.GetType());
-        }
-    }
+{            
     public class ConcreteChangeType : IChangeType
     {
         private Type wrappedType;

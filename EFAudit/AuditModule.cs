@@ -67,6 +67,11 @@ namespace EFAudit
             Enabled = true;
         }
 
+        private void HerpAderp()
+        {
+            string a = "a";
+            string b = "b";
+        }
         /// <summary>
         /// Save the changes and log them as controlled by the logging filter. 
         /// A TransactionScope is used to wrap save, which will use an ambient transaction if available, or create a new one.
@@ -75,14 +80,7 @@ namespace EFAudit
         /// </summary>
         public ISaveResult<TChangeSet> SaveChanges(TPrincipal principal)
         {
-            if (dbcontext.Database.CurrentTransaction != null)
-            {
-                return SaveChangesWithinExplicitTransaction(principal);
-            }
-            else
-            {
-                return SaveChanges(principal, new TransactionOptions());
-            }
+            return dbcontext.Database.CurrentTransaction != null ? SaveChangesWithinExplicitTransaction(principal) : SaveChanges(principal, new TransactionOptions());            
         }
 
         public ISaveResult<TChangeSet> SaveChanges(TPrincipal principal, TransactionOptions transactionOptions)
@@ -105,21 +103,21 @@ namespace EFAudit
             transactionProvider.InTransaction(() =>
             {
                 var logger = new ChangeLogger<TChangeSet, TPrincipal>(context, dbcontext, factory, filter, serializer);
-                var oven = (IDeferredChangeManager<TChangeSet, TPrincipal>)null;
+                var delayedChanges = (IDeferredChangeManager<TChangeSet, TPrincipal>)null;
 
                 context.DetectChanges();
 
                 result.AffectedObjectCount = context.SaveAndAcceptChanges((sender, args) =>
                 {
-                    oven = logger.Log(context.ObjectStateManager);
+                    delayedChanges = logger.Log(context.ObjectStateManager);
                 });
 
-                if (oven == null)
+                if (delayedChanges == null)
                     throw new ChangesNotDetectedException();
 
-                if (oven.HasChangeSet)
+                if (delayedChanges.HasChangeSet)
                 {
-                    result.ChangeSet = oven.ProcessDeferredChanges(DateTime.UtcNow, principal);
+                    result.ChangeSet = delayedChanges.ProcessDeferredChanges(DateTime.UtcNow, principal);
                     context.AddChangeSet(result.ChangeSet);
                     context.DetectChanges();
 
@@ -143,7 +141,7 @@ namespace EFAudit
         /// </summary>
         public async Task<ISaveResult<TChangeSet>> SaveChangesAsync(TPrincipal principal, TransactionOptions transactionOptions, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await saveChangesAsync(principal, new TransactionScopeProvider(transactionOptions), cancellationToken);
+            return await SaveChangesAsync(principal, new TransactionScopeProvider(transactionOptions), cancellationToken);
         }
 
         /// <summary>
@@ -154,10 +152,10 @@ namespace EFAudit
         public async Task<ISaveResult<TChangeSet>> SaveChangesWithinExplicitTransactionAsync(TPrincipal principal, CancellationToken cancellationToken = default(CancellationToken))
         {
             // If there is already an explicit transaction in use, use the NullTransactionProvider
-            return await saveChangesAsync(principal, new NullTransactionProvider(), cancellationToken);
+            return await SaveChangesAsync(principal, new NullTransactionProvider(), cancellationToken);
         }
 
-        protected async Task<ISaveResult<TChangeSet>> saveChangesAsync(TPrincipal principal, ITransactionProvider transactionProvider, CancellationToken cancellationToken)
+        protected async Task<ISaveResult<TChangeSet>> SaveChangesAsync(TPrincipal principal, ITransactionProvider transactionProvider, CancellationToken cancellationToken)
         {
             if (!Enabled)
                 return new SaveResult<TChangeSet, TPrincipal>(await context.SaveAndAcceptChangesAsync(cancellationToken: cancellationToken));
@@ -169,7 +167,7 @@ namespace EFAudit
             await transactionProvider.InTransactionAsync(async () =>
             {
                 var logger = new ChangeLogger<TChangeSet, TPrincipal>(context, dbcontext, factory, filter, serializer);
-                var oven = (IDeferredChangeManager<TChangeSet, TPrincipal>)null;
+                var delayedChanges = (IDeferredChangeManager<TChangeSet, TPrincipal>)null;
 
                 cancellationToken.ThrowIfCancellationRequested();
                 context.DetectChanges();
@@ -179,19 +177,19 @@ namespace EFAudit
                     (sender, args) =>
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        oven = logger.Log(context.ObjectStateManager);
+                        delayedChanges = logger.Log(context.ObjectStateManager);
 
                         // NOTE: This is the last chance to cancel the save.
                         cancellationToken.ThrowIfCancellationRequested();
                     }
                 );
 
-                if (oven == null)
+                if (delayedChanges == null)
                     throw new ChangesNotDetectedException();
 
-                if (oven.HasChangeSet)
+                if (delayedChanges.HasChangeSet)
                 {
-                    result.ChangeSet = oven.ProcessDeferredChanges(DateTime.UtcNow, principal);
+                    result.ChangeSet = delayedChanges.ProcessDeferredChanges(DateTime.UtcNow, principal);
                     context.AddChangeSet(result.ChangeSet);
                     context.DetectChanges();
 

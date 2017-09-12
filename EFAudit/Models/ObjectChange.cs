@@ -40,7 +40,7 @@ namespace EFAudit.Models
 
         public override string ToString()
         {
-            return string.Format("{0}:{1}", TypeName, EntityId);
+            return $"{TypeName} {EntityId}";
         }
     }
 }

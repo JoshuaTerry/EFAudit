@@ -32,7 +32,7 @@ namespace EFAudit.Models
 
         public override string ToString()
         {
-            return string.Format("By {0} on {1}, with {2} ObjectChanges", User.UserName ?? UserName, Timestamp, ObjectChanges.Count);
+            return $"By {UserName} on {Timestamp} with {ObjectChanges.Count} changes.";
         }
     }
 }

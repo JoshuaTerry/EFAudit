@@ -35,7 +35,9 @@ namespace EFAudit.Logging.ValuePairs
             get
             {
                 var value = originalValue() ?? newValue();
-                return value.GetChangeType();
+                var changeType = value == null ? new UnknownChangeType() as IChangeType : new ConcreteChangeType(value.GetType()) as IChangeType;
+
+                return changeType;
             }
         }
 
