@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFAudit", "EFAudit\EFAudit.csproj", "{7F9A17E9-8DB3-4E50-A9BB-9DE5CBC0DC44}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{29DD3B76-817E-4609-AF11-B9A267E5DE46}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.txt = ReadMe.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F9A17E9-8DB3-4E50-A9BB-9DE5CBC0DC44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F9A17E9-8DB3-4E50-A9BB-9DE5CBC0DC44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F9A17E9-8DB3-4E50-A9BB-9DE5CBC0DC44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F9A17E9-8DB3-4E50-A9BB-9DE5CBC0DC44}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CC439F47-3C79-4BFA-A565-64C9B4839212}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7F9A17E9-8DB3-4E50-A9BB-9DE5CBC0DC44}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EFAudit</RootNamespace>
+    <AssemblyName>EFAudit</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualC" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AuditModule.cs" />
+    <Compile Include="Contexts\DbContextAdapter.cs" />
+    <Compile Include="Contexts\ObjectContextAdapter.cs" />
+    <Compile Include="Exceptions\ChangesNotDetectedException.cs" />
+    <Compile Include="Exceptions\ConflictingTransactionException.cs" />
+    <Compile Include="Exceptions\ErrorInDeferredCalculation.cs" />
+    <Compile Include="Exceptions\FailedToRetrieveObjectException.cs" />
+    <Compile Include="Exceptions\InvalidPropertyExpressionException.cs" />
+    <Compile Include="Exceptions\ObjectTypeDoesNotExistInDataModelException.cs" />
+    <Compile Include="Filter\AttributeBasedLoggingFilter.cs" />
+    <Compile Include="Filter\BlacklistLoggingFilter.cs" />
+    <Compile Include="Filter\FilterAttributeCache.cs" />
+    <Compile Include="Filter\Filters.cs" />
+    <Compile Include="Filter\TypeLookup.cs" />
+    <Compile Include="Filter\UnknownTypeException.cs" />
+    <Compile Include="Filter\WhitelistLoggingFilter.cs" />
+    <Compile Include="Helpers\DisposableSavingChangesListener.cs" />
+    <Compile Include="Helpers\ExpressionHelper.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Helpers\MetadataSpaceMapper.cs" />
+    <Compile Include="Helpers\ReferenceEqualityComparer.cs" />
+    <Compile Include="Interfaces\IAuditLogContext.cs" />
+    <Compile Include="Interfaces\IBinder.cs" />
+    <Compile Include="Interfaces\IBindManager.cs" />
+    <Compile Include="Interfaces\IChangeSet.cs" />
+    <Compile Include="Interfaces\IChangeSetFactory.cs" />
+    <Compile Include="Interfaces\IChangeType.cs" />
+    <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Interfaces\IFilterAttribute.cs" />
+    <Compile Include="Interfaces\IHasLoggingReference.cs" />
+    <Compile Include="Interfaces\IHistoryContext.cs" />
+    <Compile Include="Interfaces\ILoggingFilter.cs" />
+    <Compile Include="Interfaces\ILoggingFilterProvider.cs" />
+    <Compile Include="Interfaces\IObjectChange.cs" />
+    <Compile Include="Interfaces\IPropertyChanged.cs" />
+    <Compile Include="Interfaces\ISaveResult.cs" />
+    <Compile Include="Interfaces\ISerializationManager.cs" />
+    <Compile Include="Interfaces\ISerializer.cs" />
+    <Compile Include="Interfaces\ITransactionProvider.cs" />
+    <Compile Include="Interfaces\IValueTranslator.cs" />
+    <Compile Include="Logging\ChangeLogger.cs" />
+    <Compile Include="Logging\ChangeSetFactory.cs" />
+    <Compile Include="Logging\ChangeType.cs" />
+    <Compile Include="Logging\DeferredObjectChange.cs" />
+    <Compile Include="Logging\DeferredValue.cs" />
+    <Compile Include="Logging\DeferredValueMap.cs" />
+    <Compile Include="Interfaces\IDeferredChangeManager.cs" />
+    <Compile Include="Logging\Recorder.cs" />
+    <Compile Include="Logging\SaveResult.cs" />
+    <Compile Include="Logging\ValuePairs\DataRecordValuePair.cs" />
+    <Compile Include="Interfaces\IValuePair.cs" />
+    <Compile Include="Logging\ValuePairs\ValuePair.cs" />
+    <Compile Include="Logging\ValuePairs\ValuePairSource.cs" />
+    <Compile Include="Models\ChangeSet.cs" />
+    <Compile Include="Models\ObjectChange.cs" />
+    <Compile Include="Models\PropertyChange.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transactions\NullTransactionProvider.cs" />
+    <Compile Include="Transactions\TransactionScopeProvider.cs" />
+    <Compile Include="Translation\BinaryBlobTranslator.cs" />
+    <Compile Include="Translation\CollectionTranslator.cs" />
+    <Compile Include="Translation\DateTimeOffsetTranslator.cs" />
+    <Compile Include="Translation\DateTimeTranslator.cs" />
+    <Compile Include="Translation\EnumTranslator.cs" />
+    <Compile Include="Translation\GuidTranslator.cs" />
+    <Compile Include="Translation\NullableBinder.cs" />
+    <Compile Include="Translation\PrimitiveTranslator.cs" />
+    <Compile Include="Translation\TimeSpanTranslator.cs" />
+    <Compile Include="Translation\ValueTranslationManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
